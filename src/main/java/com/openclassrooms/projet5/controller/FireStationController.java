@@ -1,9 +1,9 @@
-package controller;
+package com.openclassrooms.projet5.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
-import service.FireStationService;
+import com.openclassrooms.projet5.service.FireStationService;
 
 @RestController
 public class FireStationController {

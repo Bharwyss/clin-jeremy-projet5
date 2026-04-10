@@ -1,4 +1,4 @@
-package model;
+package com.openclassrooms.projet5.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
