@@ -3,6 +3,7 @@ package com.openclassrooms.projet5.service;
 import com.openclassrooms.projet5.dto.ChildAlertDto;
 import com.openclassrooms.projet5.dto.ChildDto;
 import com.openclassrooms.projet5.dto.HouseholdMemberDto;
+import com.openclassrooms.projet5.dto.PersonLastName;
 import com.openclassrooms.projet5.model.MedicalRecord;
 import com.openclassrooms.projet5.model.Person;
 import com.openclassrooms.projet5.model.SafetyNetData;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.openclassrooms.projet5.utils.AgeCalculator.calculateAge;
 import static com.openclassrooms.projet5.utils.PersonFinder.getPersonByAddress;
 
 @Service
@@ -59,12 +61,12 @@ public class PersonService {
         dataLoader.saveSafetyData(data);
     }
 
-    public ChildAlertDto getChildAlert(String addresses) {
+    public ChildAlertDto getChildAlert(String address) {
         logger.info("Getting children from household for alert");
 
         SafetyNetData data = dataLoader.getSafetyNetData();
 
-        List<Person> household = getPersonByAddress(data, addresses);
+        List<Person> household = getPersonByAddress(data, address);
         List<ChildDto> childDtoList = new ArrayList<>();
         List<HouseholdMemberDto> memberDtoList = new ArrayList<>();
 
@@ -86,5 +88,41 @@ public class PersonService {
             return new ChildAlertDto(List.of(), List.of());
         }
         return new ChildAlertDto(childDtoList, memberDtoList);
+    }
+
+    public List<PersonLastName> getPersonLastNames(String lastName) {
+        logger.info("Getting person last names");
+
+        SafetyNetData data = dataLoader.getSafetyNetData();
+
+        List<PersonLastName> personLastNames = new ArrayList<>();
+        for (Person person : data.getPersons()) {
+            if (!person.getLastName().equals(lastName)) {
+                continue;
+            }
+
+            for (MedicalRecord record : data.getMedicalrecords()) {
+                if (record.getFirstName().equals(person.getFirstName())
+                        && record.getLastName().equals(person.getLastName())) {
+                    int age = calculateAge(record.getBirthdate());
+                    personLastNames.add(new PersonLastName(person.getLastName(), person.getAddress(),
+                            age, person.getEmail(), record.getMedications(), record.getAllergies()));
+                    break;
+                }
+            }
+        }
+        return personLastNames;
+    }
+
+    public List<String> getCommunityEmails(String city) {
+        logger.info("Getting community emails");
+
+        SafetyNetData data = dataLoader.getSafetyNetData();
+
+        return data.getPersons().stream()
+                .filter(person -> person.getCity().equals(city))
+                .map(Person::getEmail)
+                .distinct()
+                .toList();
     }
 }

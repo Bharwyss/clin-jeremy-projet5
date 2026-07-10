@@ -1,9 +1,6 @@
 package com.openclassrooms.projet5.controller;
 
-import com.openclassrooms.projet5.dto.ChildAlertDto;
-import com.openclassrooms.projet5.dto.FireDto;
-import com.openclassrooms.projet5.dto.FireStationCoverageDto;
-import com.openclassrooms.projet5.dto.FloodHousehold;
+import com.openclassrooms.projet5.dto.*;
 import com.openclassrooms.projet5.service.FireStationService;
 import com.openclassrooms.projet5.service.PersonService;
 import org.slf4j.Logger;
@@ -55,5 +52,17 @@ public class UrlController {
     public ResponseEntity<List<FloodHousehold>> getFloodHousehold(@RequestParam("stations") List<String> stations) {
         List<FloodHousehold> floodHousehold = fireStationService.getFloodHousehold(stations);
         return ResponseEntity.ok(floodHousehold);
+    }
+
+    @GetMapping("personInfo")
+    public ResponseEntity<List<PersonLastName>> getPersonLastName(@RequestParam String lastName) {
+        List<PersonLastName> personLastNames = personService.getPersonLastNames(lastName);
+        return ResponseEntity.ok(personLastNames);
+    }
+
+    @GetMapping("/communityEmail")
+    public ResponseEntity<List<String>> getCommunityEmail(@RequestParam String city) {
+        List<String> communityEmail = personService.getCommunityEmails(city);
+        return ResponseEntity.ok(communityEmail);
     }
 }

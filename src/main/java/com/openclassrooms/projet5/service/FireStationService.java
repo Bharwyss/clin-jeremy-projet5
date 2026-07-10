@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.openclassrooms.projet5.utils.AgeCalculator.calculateAge;
+import static com.openclassrooms.projet5.utils.PersonMedicalBuilder.buildPersonMedicalDto;
 
 @Service
 public class FireStationService {
@@ -133,18 +134,6 @@ public class FireStationService {
         return floodHouseholds;
     }
 
-
-    private PersonFromFireDto buildPersonMedicalDto(SafetyNetData data, Person person) {
-        for (MedicalRecord record : data.getMedicalrecords()) {
-            if (record.getFirstName().equals(person.getFirstName())
-                    && record.getLastName().equals(person.getLastName())) {
-                int age = calculateAge(record.getBirthdate());
-                return new PersonFromFireDto(person.getLastName(), person.getPhone(),
-                        age, record.getMedications(), record.getAllergies());
-            }
-        }
-        return null;
-    }
 
     private List<String> getAddressesFromFireStation(SafetyNetData data, String stationNumber) {
         return data.getFirestations().stream()
