@@ -33,7 +33,6 @@ public class PersonService {
         logger.info("Adding person: {}", person);
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getPersons().add(person);
-        dataLoader.saveSafetyData(data);
     }
 
     public void updatePerson(Person person) {
@@ -50,7 +49,6 @@ public class PersonService {
                     p.setPhone(person.getPhone());
                     p.setEmail(person.getEmail());
                 });
-        dataLoader.saveSafetyData(data);
     }
 
     public void deletePerson(Person person) {
@@ -58,7 +56,6 @@ public class PersonService {
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getPersons().removeIf(p -> (p.getFirstName().equals(person.getFirstName()) &&
                 p.getLastName().equals(person.getLastName())));
-        dataLoader.saveSafetyData(data);
     }
 
     public ChildAlertDto getChildAlert(String address) {

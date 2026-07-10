@@ -1,12 +1,9 @@
 package com.openclassrooms.projet5.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.util.List;
 
 
 public record FireStationCoverageDto(List<PersonFromStationDto> persons,
-        int adultCount,
-        int childCount) {
+                                     int adultCount,
+                                     int childCount) {
 }

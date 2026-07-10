@@ -1,7 +1,6 @@
 package com.openclassrooms.projet5.service;
 
 import com.openclassrooms.projet5.model.MedicalRecord;
-import com.openclassrooms.projet5.model.Person;
 import com.openclassrooms.projet5.model.SafetyNetData;
 import com.openclassrooms.projet5.utils.SafetyNetDataLoader;
 import org.slf4j.Logger;
@@ -13,13 +12,14 @@ public class MedicalRecordService {
     private static final Logger logger = LoggerFactory.getLogger(MedicalRecordService.class);
     private final SafetyNetDataLoader dataLoader;
 
-    public MedicalRecordService(SafetyNetDataLoader dataLoader) {this.dataLoader = dataLoader;}
+    public MedicalRecordService(SafetyNetDataLoader dataLoader) {
+        this.dataLoader = dataLoader;
+    }
 
     public void addMedicalRecord(MedicalRecord medicalRecord) {
         logger.info("Adding a new medical record: {}", medicalRecord);
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getMedicalrecords().add(medicalRecord);
-        dataLoader.saveSafetyData(data);
     }
 
     public void updateMedicalRecord(MedicalRecord medicalRecord) {
@@ -34,7 +34,6 @@ public class MedicalRecordService {
                     recordToUpdate.setMedications(medicalRecord.getMedications());
                     recordToUpdate.setAllergies(medicalRecord.getAllergies());
                 });
-        dataLoader.saveSafetyData(data);
     }
 
     public void deleteMedicalRecord(MedicalRecord medicalRecord) {
@@ -42,7 +41,6 @@ public class MedicalRecordService {
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getMedicalrecords().removeIf(recordToDelete -> (recordToDelete.getFirstName().equals(medicalRecord.getFirstName()) &&
                 recordToDelete.getLastName().equals(medicalRecord.getLastName())));
-        dataLoader.saveSafetyData(data);
     }
 
 }

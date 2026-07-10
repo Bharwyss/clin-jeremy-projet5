@@ -3,8 +3,6 @@ package com.openclassrooms.projet5.controller;
 import com.openclassrooms.projet5.dto.*;
 import com.openclassrooms.projet5.service.FireStationService;
 import com.openclassrooms.projet5.service.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +13,6 @@ import java.util.List;
 @RestController
 public class UrlController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
     private final FireStationService fireStationService;
     private final PersonService personService;
 
@@ -54,7 +51,7 @@ public class UrlController {
         return ResponseEntity.ok(floodHousehold);
     }
 
-    @GetMapping("personInfo")
+    @GetMapping("/personInfo")
     public ResponseEntity<List<PersonLastName>> getPersonLastName(@RequestParam String lastName) {
         List<PersonLastName> personLastNames = personService.getPersonLastNames(lastName);
         return ResponseEntity.ok(personLastNames);

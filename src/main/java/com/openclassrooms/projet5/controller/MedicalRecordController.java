@@ -1,17 +1,13 @@
 package com.openclassrooms.projet5.controller;
 
 import com.openclassrooms.projet5.model.MedicalRecord;
-import com.openclassrooms.projet5.model.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.openclassrooms.projet5.service.MedicalRecordService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.openclassrooms.projet5.service.MedicalRecordService;
 
 @RestController
 @RequestMapping("/medicalrecord")
 public class MedicalRecordController {
-    private static final Logger logger = LoggerFactory.getLogger(MedicalRecordController.class);
     private final MedicalRecordService medicalRecordService;
 
     public MedicalRecordController (MedicalRecordService service) {

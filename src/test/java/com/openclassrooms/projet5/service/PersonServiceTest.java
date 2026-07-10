@@ -12,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +44,5 @@ public class PersonServiceTest {
         // WHEN
         personService.addPerson(person);
 
-        // THEN -
-        verify(dataLoader).saveSafetyData(any(SafetyNetData.class));
     }
 }

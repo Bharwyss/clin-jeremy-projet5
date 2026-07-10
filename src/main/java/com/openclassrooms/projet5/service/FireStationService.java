@@ -30,7 +30,6 @@ public class FireStationService {
         logger.info("Adding a fire station: {}", fireStation);
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getFirestations().add(fireStation);
-        dataLoader.saveSafetyData(data);
     }
 
     public void updateFireStation(FireStation fireStation) {
@@ -42,7 +41,6 @@ public class FireStationService {
                 .ifPresent(fireStation1 -> {
                     fireStation1.setStation(fireStation.getStation());
                 });
-        dataLoader.saveSafetyData(data);
     }
 
     public void deleteFireStation(FireStation fireStation) {
@@ -50,7 +48,6 @@ public class FireStationService {
         SafetyNetData data = dataLoader.getSafetyNetData();
         data.getFirestations().removeIf(station -> (station.getAddress().equals(fireStation.getAddress())
                 && station.getStation().equals(fireStation.getStation())));
-        dataLoader.saveSafetyData(data);
     }
 
     public FireStationCoverageDto getStationCoverage(String stationNumber) {
