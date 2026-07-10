@@ -1,13 +1,21 @@
 package com.openclassrooms.projet5.service;
 
+import com.openclassrooms.projet5.dto.ChildAlertDto;
+import com.openclassrooms.projet5.dto.ChildDto;
+import com.openclassrooms.projet5.dto.HouseholdMemberDto;
+import com.openclassrooms.projet5.model.MedicalRecord;
 import com.openclassrooms.projet5.model.Person;
 import com.openclassrooms.projet5.model.SafetyNetData;
+import com.openclassrooms.projet5.utils.AgeCalculator;
+import com.openclassrooms.projet5.utils.SafetyNetDataLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import com.openclassrooms.projet5.utils.SafetyNetDataLoader;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.openclassrooms.projet5.utils.PersonFinder.getPersonByAddress;
 
 @Service
 public class PersonService {
@@ -49,5 +57,34 @@ public class PersonService {
         data.getPersons().removeIf(p -> (p.getFirstName().equals(person.getFirstName()) &&
                 p.getLastName().equals(person.getLastName())));
         dataLoader.saveSafetyData(data);
+    }
+
+    public ChildAlertDto getChildAlert(String addresses) {
+        logger.info("Getting children from household for alert");
+
+        SafetyNetData data = dataLoader.getSafetyNetData();
+
+        List<Person> household = getPersonByAddress(data, addresses);
+        List<ChildDto> childDtoList = new ArrayList<>();
+        List<HouseholdMemberDto> memberDtoList = new ArrayList<>();
+
+        for (Person person : household) {
+            for (MedicalRecord record : data.getMedicalrecords()) {
+                if (record.getFirstName().equals(person.getFirstName())
+                        && record.getLastName().equals(person.getLastName())) {
+                    int age = AgeCalculator.calculateAge(record.getBirthdate());
+                    if (age <= 18) {
+                        childDtoList.add(new ChildDto(person.getFirstName(), person.getLastName(), age));
+                    } else {
+                        memberDtoList.add(new HouseholdMemberDto(person.getFirstName(), person.getLastName()));
+                    }
+                    break;
+                }
+            }
+        }
+        if (childDtoList.isEmpty()) {
+            return new ChildAlertDto(List.of(), List.of());
+        }
+        return new ChildAlertDto(childDtoList, memberDtoList);
     }
 }

@@ -1,8 +1,6 @@
 package com.openclassrooms.projet5.controller;
 
-import com.openclassrooms.projet5.dto.FireStationCoverageDto;
 import com.openclassrooms.projet5.model.FireStation;
-import com.openclassrooms.projet5.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +35,4 @@ public class FireStationController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<FireStationCoverageDto> getStationCoverage(@RequestParam String stationNumber) {
-        FireStationCoverageDto coverage = fireStationService.getStationCoverage(stationNumber);
-        return ResponseEntity.ok(coverage);
-    }
 }

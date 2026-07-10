@@ -5,11 +5,8 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-public class FireStationCoverageDto {
-    List<PersonFromStationDto> persons;
-    int adultCount;
-    int childCount;
 
+public record FireStationCoverageDto(List<PersonFromStationDto> persons,
+        int adultCount,
+        int childCount) {
 }
